@@ -4,9 +4,8 @@ package gtime
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -26,16 +25,13 @@ type timeServiceClient struct {
 }
 
 func NewTimeServiceClient(cc grpc.ClientConnInterface) TimeServiceClient {
-	return &timeServiceClient{cc}
+	_ = "STUB: not implemented"
+	return *new(TimeServiceClient)
 }
 
 func (c *timeServiceClient) TestCall(ctx context.Context, in *CallRequest, opts ...grpc.CallOption) (*CallReply, error) {
-	out := new(CallReply)
-	err := c.cc.Invoke(ctx, "/gtime.TimeService/TestCall", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // TimeServiceServer is the server API for TimeService service.
@@ -51,37 +47,31 @@ type UnimplementedTimeServiceServer struct {
 }
 
 func (UnimplementedTimeServiceServer) TestCall(context.Context, *CallRequest) (*CallReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TestCall not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedTimeServiceServer) mustEmbedUnimplementedTimeServiceServer() {}
 
-// UnsafeTimeServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to TimeServiceServer will
-// result in compilation errors.
+func (UnimplementedTimeServiceServer) mustEmbedUnimplementedTimeServiceServer() {
+	_ = "STUB: not implemented"
+
+	// UnsafeTimeServiceServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to TimeServiceServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeTimeServiceServer interface {
 	mustEmbedUnimplementedTimeServiceServer()
 }
 
 func RegisterTimeServiceServer(s grpc.ServiceRegistrar, srv TimeServiceServer) {
-	s.RegisterService(&TimeService_ServiceDesc, srv)
+	_ = "STUB: not implemented"
+	return
 }
 
 func _TimeService_TestCall_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CallRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TimeServiceServer).TestCall(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/gtime.TimeService/TestCall",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimeServiceServer).TestCall(ctx, req.(*CallRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // TimeService_ServiceDesc is the grpc.ServiceDesc for TimeService service.

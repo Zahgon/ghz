@@ -5,9 +5,11 @@
 Package helloworld is a generated protocol buffer package.
 
 It is generated from these files:
+
 	greeter.proto
 
 It has these top-level messages:
+
 	HelloRequest
 	HelloReply
 */
@@ -41,34 +43,24 @@ type HelloRequest struct {
 	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
 }
 
-func (m *HelloRequest) Reset()                    { *m = HelloRequest{} }
-func (m *HelloRequest) String() string            { return proto.CompactTextString(m) }
-func (*HelloRequest) ProtoMessage()               {}
-func (*HelloRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (m *HelloRequest) Reset()                    { _ = "STUB: not implemented"; return }
+func (m *HelloRequest) String() string            { _ = "STUB: not implemented"; return "" }
+func (*HelloRequest) ProtoMessage()               { _ = "STUB: not implemented"; return }
+func (*HelloRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (m *HelloRequest) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
+func (m *HelloRequest) GetName() string { _ = "STUB: not implemented"; return "" }
 
 // The response message containing the greetings
 type HelloReply struct {
 	Message string `protobuf:"bytes,1,opt,name=message" json:"message,omitempty"`
 }
 
-func (m *HelloReply) Reset()                    { *m = HelloReply{} }
-func (m *HelloReply) String() string            { return proto.CompactTextString(m) }
-func (*HelloReply) ProtoMessage()               {}
-func (*HelloReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+func (m *HelloReply) Reset()                    { _ = "STUB: not implemented"; return }
+func (m *HelloReply) String() string            { _ = "STUB: not implemented"; return "" }
+func (*HelloReply) ProtoMessage()               { _ = "STUB: not implemented"; return }
+func (*HelloReply) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (m *HelloReply) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
+func (m *HelloReply) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 func init() {
 	proto.RegisterType((*HelloRequest)(nil), "helloworld.HelloRequest")
@@ -97,25 +89,18 @@ type greeterClient struct {
 }
 
 func NewGreeterClient(cc *grpc.ClientConn) GreeterClient {
-	return &greeterClient{cc}
+	_ = "STUB: not implemented"
+	return *new(GreeterClient)
 }
 
 func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
-	out := new(HelloReply)
-	err := grpc.Invoke(ctx, "/helloworld.Greeter/SayHello", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *greeterClient) SayHelloCS(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloCSClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_Greeter_serviceDesc.Streams[0], c.cc, "/helloworld.Greeter/SayHelloCS", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &greeterSayHelloCSClient{stream}
-	return x, nil
+	_ = "STUB: not implemented"
+	return *new(Greeter_SayHelloCSClient), nil
 }
 
 type Greeter_SayHelloCSClient interface {
@@ -129,33 +114,18 @@ type greeterSayHelloCSClient struct {
 }
 
 func (x *greeterSayHelloCSClient) Send(m *HelloRequest) error {
-	return x.ClientStream.SendMsg(m)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (x *greeterSayHelloCSClient) CloseAndRecv() (*HelloReply, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(HelloReply)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *greeterClient) SayHellos(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (Greeter_SayHellosClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_Greeter_serviceDesc.Streams[1], c.cc, "/helloworld.Greeter/SayHellos", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &greeterSayHellosClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	_ = "STUB: not implemented"
+	return *new(Greeter_SayHellosClient), nil
 }
 
 type Greeter_SayHellosClient interface {
@@ -168,20 +138,13 @@ type greeterSayHellosClient struct {
 }
 
 func (x *greeterSayHellosClient) Recv() (*HelloReply, error) {
-	m := new(HelloReply)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *greeterClient) SayHelloBidi(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloBidiClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_Greeter_serviceDesc.Streams[2], c.cc, "/helloworld.Greeter/SayHelloBidi", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &greeterSayHelloBidiClient{stream}
-	return x, nil
+	_ = "STUB: not implemented"
+	return *new(Greeter_SayHelloBidiClient), nil
 }
 
 type Greeter_SayHelloBidiClient interface {
@@ -195,15 +158,13 @@ type greeterSayHelloBidiClient struct {
 }
 
 func (x *greeterSayHelloBidiClient) Send(m *HelloRequest) error {
-	return x.ClientStream.SendMsg(m)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (x *greeterSayHelloBidiClient) Recv() (*HelloReply, error) {
-	m := new(HelloReply)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Server API for Greeter service
@@ -215,30 +176,16 @@ type GreeterServer interface {
 	SayHelloBidi(Greeter_SayHelloBidiServer) error
 }
 
-func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) {
-	s.RegisterService(&_Greeter_serviceDesc, srv)
-}
+func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) { _ = "STUB: not implemented"; return }
 
 func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GreeterServer).SayHello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/helloworld.Greeter/SayHello",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).SayHello(ctx, req.(*HelloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _Greeter_SayHelloCS_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(GreeterServer).SayHelloCS(&greeterSayHelloCSServer{stream})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Greeter_SayHelloCSServer interface {
@@ -252,23 +199,18 @@ type greeterSayHelloCSServer struct {
 }
 
 func (x *greeterSayHelloCSServer) SendAndClose(m *HelloReply) error {
-	return x.ServerStream.SendMsg(m)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (x *greeterSayHelloCSServer) Recv() (*HelloRequest, error) {
-	m := new(HelloRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _Greeter_SayHellos_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(HelloRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(GreeterServer).SayHellos(m, &greeterSayHellosServer{stream})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Greeter_SayHellosServer interface {
@@ -280,12 +222,11 @@ type greeterSayHellosServer struct {
 	grpc.ServerStream
 }
 
-func (x *greeterSayHellosServer) Send(m *HelloReply) error {
-	return x.ServerStream.SendMsg(m)
-}
+func (x *greeterSayHellosServer) Send(m *HelloReply) error { _ = "STUB: not implemented"; return nil }
 
 func _Greeter_SayHelloBidi_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(GreeterServer).SayHelloBidi(&greeterSayHelloBidiServer{stream})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Greeter_SayHelloBidiServer interface {
@@ -299,15 +240,13 @@ type greeterSayHelloBidiServer struct {
 }
 
 func (x *greeterSayHelloBidiServer) Send(m *HelloReply) error {
-	return x.ServerStream.SendMsg(m)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (x *greeterSayHelloBidiServer) Recv() (*HelloRequest, error) {
-	m := new(HelloRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var _Greeter_serviceDesc = grpc.ServiceDesc{

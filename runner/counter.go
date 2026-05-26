@@ -1,7 +1,5 @@
 package runner
 
-import "sync/atomic"
-
 // RequestCounter gets the request count
 type RequestCounter interface {
 	Get() uint64
@@ -13,11 +11,7 @@ type Counter struct {
 }
 
 // Get retrieves the current count
-func (c *Counter) Get() uint64 {
-	return atomic.LoadUint64(&c.c)
-}
+func (c *Counter) Get() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Inc increases the current count
-func (c *Counter) Inc() uint64 {
-	return atomic.AddUint64(&c.c, 1)
-}
+func (c *Counter) Inc() uint64 { _ = "STUB: not implemented"; return 0 }

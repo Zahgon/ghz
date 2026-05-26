@@ -1,8 +1,6 @@
 package runner
 
 import (
-	"encoding/json"
-	"sort"
 	"time"
 )
 
@@ -101,16 +99,7 @@ type Report struct {
 }
 
 // MarshalJSON is custom marshal for report to properly format the date
-func (r Report) MarshalJSON() ([]byte, error) {
-	type Alias Report
-	return json.Marshal(&struct {
-		Date string `json:"date"`
-		*Alias
-	}{
-		Date:  r.Date.Format(time.RFC3339),
-		Alias: (*Alias)(&r),
-	})
-}
+func (r Report) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // LatencyDistribution holds latency distribution data
 type LatencyDistribution struct {
@@ -139,208 +128,26 @@ type ResultDetail struct {
 }
 
 func newReporter(results chan *callResult, c *RunConfig) *Reporter {
-
-	cap := min(c.n, maxResult)
-
-	return &Reporter{
-		config:  c,
-		results: results,
-		done:    make(chan bool, 1),
-		details: make([]ResultDetail, 0, cap),
-
-		statusCodeDist: make(map[string]int),
-		errorDist:      make(map[string]int),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Run runs the reporter
-func (r *Reporter) Run() {
-	var skipCount int
-
-	for res := range r.results {
-		if skipCount < r.config.skipFirst {
-			skipCount++
-			continue
-		}
-
-		errStr := ""
-		r.totalCount++
-		r.totalLatenciesSec += res.duration.Seconds()
-		r.statusCodeDist[res.status]++
-
-		if res.err != nil {
-			errStr = res.err.Error()
-			r.errorDist[errStr]++
-		}
-
-		if len(r.details) < maxResult {
-			r.details = append(r.details, ResultDetail{
-				Latency:   res.duration,
-				Timestamp: res.timestamp,
-				Status:    res.status,
-				Error:     errStr,
-			})
-		}
-	}
-	r.done <- true
-}
+func (r *Reporter) Run() { _ = "STUB: not implemented"; return }
 
 // Finalize all the gathered data into a final report
 func (r *Reporter) Finalize(stopReason StopReason, total time.Duration) *Report {
-	rep := &Report{
-		Name:           r.config.name,
-		EndReason:      stopReason,
-		Date:           time.Now(),
-		Count:          r.totalCount,
-		Total:          total,
-		ErrorDist:      r.errorDist,
-		StatusCodeDist: r.statusCodeDist}
-
-	rep.Options = Options{
-		Call:              r.config.call,
-		Host:              r.config.host,
-		Proto:             r.config.proto,
-		Protoset:          r.config.protoset,
-		ImportPaths:       r.config.importPaths,
-		EnableCompression: r.config.enableCompression,
-
-		CACert:    r.config.cacert,
-		Cert:      r.config.cert,
-		Key:       r.config.key,
-		CName:     r.config.cname,
-		SkipTLS:   r.config.skipVerify,
-		Insecure:  r.config.insecure,
-		Authority: r.config.authority,
-
-		RPS:              r.config.rps,
-		LoadSchedule:     r.config.loadSchedule,
-		LoadStart:        int(r.config.loadStart),
-		LoadEnd:          int(r.config.loadEnd),
-		LoadStep:         r.config.loadStep,
-		LoadStepDuration: r.config.loadStepDuration,
-		LoadMaxDuration:  r.config.loadDuration,
-
-		Concurrency:   r.config.c,
-		CSchedule:     r.config.cSchedule,
-		CStart:        int(r.config.cStart),
-		CEnd:          int(r.config.cEnd),
-		CStep:         r.config.cStep,
-		CStepDuration: r.config.cStepDuration,
-		CMaxDuration:  r.config.cMaxDuration,
-
-		Total: r.config.n,
-		Async: r.config.async,
-
-		Connections:   r.config.nConns,
-		Duration:      r.config.z,
-		Timeout:       r.config.timeout,
-		DialTimeout:   r.config.dialTimeout,
-		KeepaliveTime: r.config.keepaliveTime,
-
-		Binary:      r.config.binary,
-		CPUs:        r.config.cpus,
-		Name:        r.config.name,
-		SkipFirst:   r.config.skipFirst,
-		CountErrors: r.config.countErrors,
-	}
-
-	_ = json.Unmarshal(r.config.data, &rep.Options.Data)
-
-	_ = json.Unmarshal(r.config.metadata, &rep.Options.Metadata)
-
-	_ = json.Unmarshal(r.config.tags, &rep.Tags)
-
-	if len(r.details) > 0 {
-		average := r.totalLatenciesSec / float64(r.totalCount)
-		rep.Average = time.Duration(average * float64(time.Second))
-
-		rep.Rps = float64(r.totalCount) / total.Seconds()
-
-		okLats := make([]float64, 0)
-		for _, d := range r.details {
-			if d.Error == "" || rep.Options.CountErrors {
-				okLats = append(okLats, d.Latency.Seconds())
-			}
-		}
-		sort.Float64s(okLats)
-		if len(okLats) > 0 {
-			var fastestNum, slowestNum float64
-			fastestNum = okLats[0]
-			slowestNum = okLats[len(okLats)-1]
-
-			rep.Fastest = time.Duration(fastestNum * float64(time.Second))
-			rep.Slowest = time.Duration(slowestNum * float64(time.Second))
-			rep.Histogram = histogram(okLats, slowestNum, fastestNum)
-			rep.LatencyDistribution = latencies(okLats)
-		}
-
-		rep.Details = r.details
-	}
-
-	return rep
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func latencies(latencies []float64) []LatencyDistribution {
-	pctls := []int{10, 25, 50, 75, 90, 95, 99}
-	data := make([]float64, len(pctls))
-	lt := float64(len(latencies))
-	for i, p := range pctls {
-		ip := (float64(p) / 100.0) * lt
-		di := int(ip)
+func latencies(latencies []float64) []LatencyDistribution { _ = "STUB: not implemented"; return nil }
 
-		// since we're dealing with 0th based ranks we need to
-		// check if ordinal is a whole number that lands on the percentile
-		// if so adjust accordingly
-		if ip == float64(di) {
-			di = di - 1
-		}
-
-		if di < 0 {
-			di = 0
-		}
-
-		data[i] = latencies[di]
-	}
-
-	res := make([]LatencyDistribution, len(pctls))
-	for i := 0; i < len(pctls); i++ {
-		if data[i] > 0 {
-			lat := time.Duration(data[i] * float64(time.Second))
-			res[i] = LatencyDistribution{Percentage: pctls[i], Latency: lat}
-		}
-	}
-	return res
-}
+// since we're dealing with 0th based ranks we need to
+// check if ordinal is a whole number that lands on the percentile
+// if so adjust accordingly
 
 func histogram(latencies []float64, slowest, fastest float64) []Bucket {
-	bc := 10
-	buckets := make([]float64, bc+1)
-	counts := make([]int, bc+1)
-	bs := (slowest - fastest) / float64(bc)
-	for i := 0; i < bc; i++ {
-		buckets[i] = fastest + bs*float64(i)
-	}
-	buckets[bc] = slowest
-	var bi int
-	var max int
-	for i := 0; i < len(latencies); {
-		if latencies[i] <= buckets[bi] {
-			i++
-			counts[bi]++
-			if max < counts[bi] {
-				max = counts[bi]
-			}
-		} else if bi < len(buckets)-1 {
-			bi++
-		}
-	}
-	res := make([]Bucket, len(buckets))
-	for i := 0; i < len(buckets); i++ {
-		res[i] = Bucket{
-			Mark:      buckets[i],
-			Count:     counts[i],
-			Frequency: float64(counts[i]) / float64(len(latencies)),
-		}
-	}
-	return res
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -7,13 +7,13 @@
 package gtime
 
 import (
+	sync "sync"
+
 	proto "github.com/golang/protobuf/proto"
 	duration "github.com/golang/protobuf/ptypes/duration"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -37,58 +37,25 @@ type CallRequest struct {
 	UserId uint64               `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
-func (x *CallRequest) Reset() {
-	*x = CallRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_gtime_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
+func (x *CallRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CallRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CallRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CallRequest) ProtoMessage() {}
+func (*CallRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CallRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gtime_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CallRequest.ProtoReflect.Descriptor instead.
-func (*CallRequest) Descriptor() ([]byte, []int) {
-	return file_gtime_proto_rawDescGZIP(), []int{0}
-}
+func (*CallRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *CallRequest) GetTs() *timestamp.Timestamp {
-	if x != nil {
-		return x.Ts
-	}
-	return nil
-}
+func (x *CallRequest) GetTs() *timestamp.Timestamp { _ = "STUB: not implemented"; return nil }
 
-func (x *CallRequest) GetDur() *duration.Duration {
-	if x != nil {
-		return x.Dur
-	}
-	return nil
-}
+func (x *CallRequest) GetDur() *duration.Duration { _ = "STUB: not implemented"; return nil }
 
-func (x *CallRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
+func (x *CallRequest) GetUserId() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type CallReply struct {
 	state         protoimpl.MessageState
@@ -100,58 +67,25 @@ type CallReply struct {
 	Message string               `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *CallReply) Reset() {
-	*x = CallReply{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_gtime_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
+func (x *CallReply) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CallReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CallReply) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CallReply) ProtoMessage() {}
+func (*CallReply) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CallReply) ProtoReflect() protoreflect.Message {
-	mi := &file_gtime_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CallReply.ProtoReflect.Descriptor instead.
-func (*CallReply) Descriptor() ([]byte, []int) {
-	return file_gtime_proto_rawDescGZIP(), []int{1}
-}
+func (*CallReply) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *CallReply) GetTs() *timestamp.Timestamp {
-	if x != nil {
-		return x.Ts
-	}
-	return nil
-}
+func (x *CallReply) GetTs() *timestamp.Timestamp { _ = "STUB: not implemented"; return nil }
 
-func (x *CallReply) GetDur() *duration.Duration {
-	if x != nil {
-		return x.Dur
-	}
-	return nil
-}
+func (x *CallReply) GetDur() *duration.Duration { _ = "STUB: not implemented"; return nil }
 
-func (x *CallReply) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *CallReply) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 var File_gtime_proto protoreflect.FileDescriptor
 
@@ -191,12 +125,7 @@ var (
 	file_gtime_proto_rawDescData = file_gtime_proto_rawDesc
 )
 
-func file_gtime_proto_rawDescGZIP() []byte {
-	file_gtime_proto_rawDescOnce.Do(func() {
-		file_gtime_proto_rawDescData = protoimpl.X.CompressGZIP(file_gtime_proto_rawDescData)
-	})
-	return file_gtime_proto_rawDescData
-}
+func file_gtime_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_gtime_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_gtime_proto_goTypes = []interface{}{
@@ -219,53 +148,5 @@ var file_gtime_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_gtime_proto_init() }
-func file_gtime_proto_init() {
-	if File_gtime_proto != nil {
-		return
-	}
-	if !protoimpl.UnsafeEnabled {
-		file_gtime_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CallRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_gtime_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CallReply); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_gtime_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   2,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_gtime_proto_goTypes,
-		DependencyIndexes: file_gtime_proto_depIdxs,
-		MessageInfos:      file_gtime_proto_msgTypes,
-	}.Build()
-	File_gtime_proto = out.File
-	file_gtime_proto_rawDesc = nil
-	file_gtime_proto_goTypes = nil
-	file_gtime_proto_depIdxs = nil
-}
+func init()                  { file_gtime_proto_init() }
+func file_gtime_proto_init() { _ = "STUB: not implemented"; return }

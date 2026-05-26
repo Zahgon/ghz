@@ -1,11 +1,5 @@
 package config
 
-import (
-	"strings"
-
-	"github.com/jinzhu/configor"
-)
-
 // Config is the application config
 type Config struct {
 	Server   Server
@@ -31,18 +25,4 @@ type Server struct {
 }
 
 // Read the config file
-func Read(path string) (*Config, error) {
-	if strings.TrimSpace(path) == "" {
-		path = "config.toml"
-	}
-
-	config := Config{}
-
-	err := configor.New(&configor.Config{ENVPrefix: "GHZ"}).Load(&config, path)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &config, nil
-}
+func Read(path string) (*Config, error) { _ = "STUB: not implemented"; return nil, nil }

@@ -1,19 +1,13 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
 	"os"
 	"runtime"
 	"strconv"
 	"strings"
 
 	"github.com/alecthomas/kingpin"
-	"github.com/dustin/go-humanize"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 
 	"github.com/bojand/ghz/printer"
 	"github.com/bojand/ghz/runner"
@@ -382,432 +376,37 @@ func main() {
 	handleError(p.Print(cfg.Format))
 }
 
-func handleError(err error) {
-	if err != nil {
-		if errString := err.Error(); errString != "" {
-			fmt.Fprintln(os.Stderr, errString)
-		}
-		os.Exit(1)
-	}
-}
+func handleError(err error) { _ = "STUB: not implemented"; return }
 
-func createConfigFromArgs(cfg *runner.Config) error {
-	if cfg == nil {
-		return errors.New("config cannot be nil")
-	}
-
-	iPaths := []string{}
-	pathsTrimmed := strings.TrimSpace(*paths)
-	if pathsTrimmed != "" {
-		iPaths = strings.Split(pathsTrimmed, ",")
-	}
-
-	var binaryData []byte
-	if *binData {
-		b, err := io.ReadAll(os.Stdin)
-		if err != nil {
-			return err
-		}
-
-		binaryData = b
-	}
-
-	var metadata map[string]string
-	*md = strings.TrimSpace(*md)
-	if *md != "" {
-		if err := json.Unmarshal([]byte(*md), &metadata); err != nil {
-			return fmt.Errorf("error unmarshaling metadata '%v': %v", *md, err.Error())
-		}
-	}
-
-	var dataObj interface{}
-	if *data != "@" && strings.TrimSpace(*data) != "" {
-		if err := json.Unmarshal([]byte(*data), &dataObj); err != nil {
-			return fmt.Errorf("error unmarshaling data '%v': %v", *data, err.Error())
-		}
-	}
-
-	var tagsMap map[string]string
-	*tags = strings.TrimSpace(*tags)
-	if *tags != "" {
-		if err := json.Unmarshal([]byte(*tags), &tagsMap); err != nil {
-			return fmt.Errorf("error unmarshaling tags '%v': %v", *tags, err.Error())
-		}
-	}
-
-	var rmdMap map[string]string
-	*rmd = strings.TrimSpace(*rmd)
-	if *rmd != "" {
-		if err := json.Unmarshal([]byte(*rmd), &rmdMap); err != nil {
-			return fmt.Errorf("error unmarshaling reflection metadata '%v': %v", *rmd, err.Error())
-		}
-	}
-
-	if isMaxRecvMsgSizeSet {
-		_, err := humanize.ParseBytes(*maxRecvMsgSize)
-		if err != nil {
-			return errors.New("invalid max call recv message size: " + err.Error())
-		}
-	}
-
-	if isMaxSendMsgSizeSet {
-		_, err := humanize.ParseBytes(*maxSendMsgSize)
-		if err != nil {
-			return errors.New("invalid max call send message size: " + err.Error())
-		}
-	}
-
-	cfg.Host = *host
-	cfg.Proto = *proto
-	cfg.Protoset = *protoset
-	cfg.Call = *call
-	cfg.RootCert = *cacert
-	cfg.Cert = *cert
-	cfg.Key = *key
-	cfg.SkipTLSVerify = *skipVerify
-	cfg.SkipFirst = *skipFirst
-	cfg.Insecure = *insecure
-	cfg.Authority = *authority
-	cfg.CName = *cname
-	cfg.N = *n
-	cfg.C = *c
-	cfg.RPS = *rps
-	cfg.Z = runner.Duration(*z)
-	cfg.X = runner.Duration(*x)
-	cfg.Timeout = runner.Duration(*t)
-	cfg.ZStop = *zstop
-	cfg.Data = dataObj
-	cfg.DataPath = *dataPath
-	cfg.BinData = binaryData
-	cfg.BinDataPath = *binPath
-	cfg.Metadata = metadata
-	cfg.MetadataPath = *mdPath
-	cfg.SI = runner.Duration(*si)
-	cfg.StreamCallDuration = runner.Duration(*scd)
-	cfg.StreamCallCount = *scc
-	cfg.StreamDynamicMessages = *sdm
-	cfg.Output = *output
-	cfg.Format = *format
-	cfg.ImportPaths = iPaths
-	cfg.Connections = *conns
-	cfg.DialTimeout = runner.Duration(*ct)
-	cfg.KeepaliveTime = runner.Duration(*kt)
-	cfg.CPUs = *cpus
-	cfg.Name = *name
-	cfg.Tags = tagsMap
-	cfg.ReflectMetadata = rmdMap
-	cfg.Debug = *debug
-	cfg.EnableCompression = *enableCompression
-	cfg.LoadSchedule = *schedule
-	cfg.LoadStart = *loadStart
-	cfg.LoadStep = *loadStep
-	cfg.LoadEnd = *loadEnd
-	cfg.LoadStepDuration = runner.Duration(*loadStepDuration)
-	cfg.LoadMaxDuration = runner.Duration(*loadMaxDuration)
-	cfg.Async = *async
-	cfg.CSchedule = *cschdule
-	cfg.CStart = *cStart
-	cfg.CStep = *cstep
-	cfg.CEnd = *cEnd
-	cfg.CStepDuration = runner.Duration(*cStepDuration)
-	cfg.CMaxDuration = runner.Duration(*cMaxDuration)
-	cfg.CountErrors = *countErrors
-	cfg.LBStrategy = *lbStrategy
-	cfg.MaxCallRecvMsgSize = *maxRecvMsgSize
-	cfg.MaxCallSendMsgSize = *maxSendMsgSize
-	cfg.DisableTemplateFuncs = *disableTemplateFuncs
-	cfg.DisableTemplateData = *disableTemplateData
-
-	return nil
-}
+func createConfigFromArgs(cfg *runner.Config) error { _ = "STUB: not implemented"; return nil }
 
 func mergeConfig(dest *runner.Config, src *runner.Config) error {
-	if src == nil || dest == nil {
-		return errors.New("config cannot be nil")
-	}
-
-	// proto
-
-	if isProtoSet {
-		dest.Proto = src.Proto
-	}
-
-	if isProtoSetSet {
-		dest.Protoset = src.Protoset
-	}
-
-	if isCallSet {
-		dest.Call = src.Call
-	}
-
-	// security
-
-	if isCACertSet {
-		dest.RootCert = src.RootCert
-	}
-
-	if isCertSet {
-		dest.Cert = src.Cert
-	}
-
-	if isKeySet {
-		dest.Key = src.Key
-	}
-
-	if isSkipSet {
-		dest.SkipTLSVerify = src.SkipTLSVerify
-	}
-
-	if isInsecSet {
-		dest.Insecure = src.Insecure
-	}
-
-	if isAuthSet {
-		dest.Authority = src.Authority
-	}
-
-	if isCNameSet {
-		dest.CName = src.CName
-	}
-
-	if isSkipFirstSet {
-		dest.SkipFirst = src.SkipFirst
-	}
-
-	if isCESet {
-		dest.CountErrors = src.CountErrors
-	}
-
-	// run
-
-	if isNSet {
-		dest.N = src.N
-	}
-
-	if isZSet {
-		dest.Z = src.Z
-	}
-
-	if isXSet {
-		dest.X = src.X
-	}
-
-	if isTSet {
-		dest.Timeout = src.Timeout
-	}
-
-	if isZStopSet {
-		dest.ZStop = src.ZStop
-	}
-
-	// data
-
-	if isDataSet {
-		dest.Data = src.Data
-	}
-
-	if isDataPathSet {
-		dest.DataPath = src.DataPath
-	}
-
-	if isBinDataSet {
-		dest.BinData = src.BinData
-	}
-
-	if isBinDataPathSet {
-		dest.BinDataPath = src.BinDataPath
-	}
-
-	if isMDSet {
-		dest.Metadata = src.Metadata
-	}
-
-	if isMDPathSet {
-		dest.MetadataPath = src.MetadataPath
-	}
-
-	// other
-
-	if isSISet {
-		dest.SI = src.SI
-	}
-
-	if isSCSet {
-		dest.StreamCallDuration = src.StreamCallDuration
-	}
-
-	if isSCCSet {
-		dest.StreamCallCount = src.StreamCallCount
-	}
-
-	if isSDMSet {
-		dest.StreamDynamicMessages = src.StreamDynamicMessages
-	}
-
-	if isOutputSet {
-		dest.Output = src.Output
-	}
-
-	if isFormatSet {
-		dest.Format = src.Format
-	}
-
-	if isImportSet {
-		dest.ImportPaths = src.ImportPaths
-	}
-
-	if isConnSet {
-		dest.Connections = src.Connections
-	}
-
-	if isCTSet {
-		dest.DialTimeout = src.DialTimeout
-	}
-
-	if isKTSet {
-		dest.KeepaliveTime = src.KeepaliveTime
-	}
-
-	if isCPUSet {
-		dest.CPUs = src.CPUs
-	}
-
-	if isNameSet {
-		dest.Name = src.Name
-	}
-
-	if isTagsSet {
-		dest.Tags = src.Tags
-	}
-
-	if isRMDSet {
-		dest.ReflectMetadata = src.ReflectMetadata
-	}
-
-	if isDebugSet {
-		dest.Debug = src.Debug
-	}
-
-	if isHostSet {
-		dest.Host = src.Host
-	}
-
-	if isLBStrategySet {
-		dest.LBStrategy = src.LBStrategy
-	}
-
-	// load
-
-	if isAsyncSet {
-		dest.Async = src.Async
-	}
-
-	if isRPSSet {
-		dest.RPS = src.RPS
-	}
-
-	if isScheduleSet {
-		dest.LoadSchedule = src.LoadSchedule
-	}
-
-	if isLoadStartSet {
-		dest.LoadStart = src.LoadStart
-	}
-
-	if isLoadStepSet {
-		dest.LoadStep = src.LoadStep
-	}
-
-	if isLoadEndSet {
-		dest.LoadEnd = src.LoadEnd
-	}
-
-	if isLoadStepDurSet {
-		dest.LoadStepDuration = src.LoadStepDuration
-	}
-
-	if isLoadMaxDurSet {
-		dest.LoadMaxDuration = src.LoadMaxDuration
-	}
-
-	// concurrency
-
-	if isCSet {
-		dest.C = src.C
-	}
-
-	if isCScheduleSet {
-		dest.CSchedule = src.CSchedule
-	}
-
-	if isCStartSet {
-		dest.CStart = src.CStart
-	}
-
-	if isCStepSet {
-		dest.CStep = src.CStep
-	}
-
-	if isCEndSet {
-		dest.CEnd = src.CEnd
-	}
-
-	if isCStepDurSet {
-		dest.CStepDuration = src.CStepDuration
-	}
-
-	if isCMaxDurSet {
-		dest.CMaxDuration = src.CMaxDuration
-	}
-
-	// message size
-
-	if isMaxRecvMsgSizeSet {
-		dest.MaxCallRecvMsgSize = src.MaxCallRecvMsgSize
-	}
-
-	if isMaxSendMsgSizeSet {
-		dest.MaxCallSendMsgSize = src.MaxCallSendMsgSize
-	}
-
-	// call data template functions behavior
-	if isDisableTemplateFuncsSet {
-		dest.DisableTemplateFuncs = src.DisableTemplateFuncs
-	}
-
-	// call data template behavior
-	if isDisableTemplateDataSet {
-		dest.DisableTemplateData = src.DisableTemplateData
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// proto
+
+// security
+
+// run
+
+// data
+
+// other
+
+// load
+
+// concurrency
+
+// message size
+
+// call data template functions behavior
+
+// call data template behavior
 
 // createLogger creates a new zap logger
 func createLogger(path string) (*zap.SugaredLogger, error) {
-
-	var encoderCfg zapcore.EncoderConfig
-	var cfg zap.Config
-
-	encoderCfg = zap.NewProductionEncoderConfig()
-	cfg = zap.NewProductionConfig()
-
-	encoderCfg.LevelKey = "level"
-	encoderCfg.MessageKey = "message"
-	encoderCfg.CallerKey = ""
-	encoderCfg.TimeKey = "time"
-	encoderCfg.EncodeTime = zapcore.RFC3339NanoTimeEncoder
-	encoderCfg.EncodeCaller = nil
-
-	cfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
-	cfg.EncoderConfig = encoderCfg
-	cfg.OutputPaths = []string{path}
-	cfg.ErrorOutputPaths = []string{path}
-
-	dl, err := cfg.Build()
-	if err != nil {
-		return nil, err
-	}
-
-	return dl.Sugar(), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

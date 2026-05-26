@@ -1,59 +1,25 @@
 package runner
 
 import (
-	"errors"
-	"path"
-	"strings"
 	"time"
-
-	"github.com/jinzhu/configor"
-
-	humanize "github.com/dustin/go-humanize"
 )
 
 // Duration is our duration with TOML support
 type Duration time.Duration
 
 // UnmarshalText is our custom unmarshaller with TOML support
-func (d *Duration) UnmarshalText(text []byte) error {
-	dur, err := time.ParseDuration(string(text))
-	if err != nil {
-		return err
-	}
-
-	*d = Duration(dur)
-	return nil
-}
+func (d *Duration) UnmarshalText(text []byte) error { _ = "STUB: not implemented"; return nil }
 
 // MarshalText implements encoding.TextMarshaler
-func (d Duration) MarshalText() ([]byte, error) {
-	return []byte(time.Duration(d).String()), nil
-}
+func (d Duration) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (d Duration) String() string {
-	return time.Duration(d).String()
-}
+func (d Duration) String() string { _ = "STUB: not implemented"; return "" }
 
 // UnmarshalJSON is our custom unmarshaller with JSON support
-func (d *Duration) UnmarshalJSON(text []byte) error {
-	first := text[0]
-	last := text[len(text)-1]
-	if first == '"' && last == '"' {
-		text = text[1 : len(text)-1]
-	}
-	dur, err := time.ParseDuration(string(text))
-	if err != nil {
-		return err
-	}
-
-	*d = Duration(dur)
-	return nil
-}
+func (d *Duration) UnmarshalJSON(text []byte) error { _ = "STUB: not implemented"; return nil }
 
 // MarshalJSON implements encoding JSONMarshaler
-func (d Duration) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + time.Duration(d).String() + `"`), nil
-}
+func (d Duration) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Config for the run.
 // TODO fix casing and consistency.
@@ -120,79 +86,7 @@ type Config struct {
 	DisableTemplateData   bool              `json:"disable-template-data" toml:"disable-template-data" yaml:"disable-template-data"`
 }
 
-func checkData(data interface{}) error {
-	_, isObjData := data.(map[string]interface{})
-	if !isObjData {
-		arrData, isArrData := data.([]interface{})
-		if !isArrData {
-			return errors.New("unsupported type for Data")
-		}
-		if len(arrData) == 0 {
-			return errors.New("data array must not be empty")
-		}
-		for _, elem := range arrData {
-			_, isObjData = elem.(map[string]interface{})
-			if !isObjData {
-				return errors.New("data array contains unsupported type")
-			}
-		}
-
-	}
-
-	return nil
-}
+func checkData(data interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // LoadConfig loads the config from a file
-func LoadConfig(p string, c *Config) error {
-	err := configor.Load(c, p)
-	if err != nil {
-		return err
-	}
-
-	if c.Data != nil {
-		ext := path.Ext(p)
-		if strings.EqualFold(ext, ".yaml") || strings.EqualFold(ext, ".yml") {
-			objData, isObjData2 := c.Data.(map[interface{}]interface{})
-			if isObjData2 {
-				nd := make(map[string]interface{})
-				for k, v := range objData {
-					sk, isString := k.(string)
-					if !isString {
-						return errors.New("data key must string")
-					}
-					if len(sk) > 0 {
-						nd[sk] = v
-					}
-				}
-
-				c.Data = nd
-			}
-		}
-
-		err := checkData(c.Data)
-		if err != nil {
-			return err
-		}
-	}
-
-	c.ZStop = strings.ToLower(c.ZStop)
-	if c.ZStop != "close" && c.ZStop != "ignore" && c.ZStop != "wait" {
-		c.ZStop = "close"
-	}
-
-	if c.MaxCallRecvMsgSize != "" {
-		_, err = humanize.ParseBytes(c.MaxCallRecvMsgSize)
-		if err != nil {
-			return errors.New("invalid max call recv message size: " + err.Error())
-		}
-	}
-
-	if c.MaxCallSendMsgSize != "" {
-		_, err = humanize.ParseBytes(c.MaxCallSendMsgSize)
-		if err != nil {
-			return errors.New("invalid max call send message size: " + err.Error())
-		}
-	}
-
-	return nil
-}
+func LoadConfig(p string, c *Config) error { _ = "STUB: not implemented"; return nil }

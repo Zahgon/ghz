@@ -2,18 +2,14 @@ package runner
 
 import (
 	"bytes"
-	"encoding/base64"
-	"encoding/json"
 	htmlTemplate "html/template"
 	"math/rand"
-	"strings"
 	"sync"
 	"text/template"
 	"text/template/parse"
 	"time"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/google/uuid"
 	"github.com/jhump/protoreflect/desc"
 )
 
@@ -58,88 +54,17 @@ var tmplFuncMap = template.FuncMap{
 func newCallData(
 	mtd *desc.MethodDescriptor,
 	workerID string, reqNum int64, withFuncs, withTemplateData bool, funcs template.FuncMap) *CallData {
-
-	var t *template.Template
-	if withTemplateData {
-		t = template.New("call_template_data")
-
-		if withFuncs {
-			t = t.
-				Funcs(tmplFuncMap).
-				Funcs(template.FuncMap(sprigFuncMap))
-
-			if len(funcs) > 0 {
-				fns := make(template.FuncMap, len(funcs))
-
-				for k, v := range funcs {
-					fns[k] = v
-				}
-
-				t = t.Funcs(fns)
-			}
-		}
-	}
-
-	now := time.Now()
-	newUUID, _ := uuid.NewRandom()
-
-	return &CallData{
-		WorkerID:           workerID,
-		RequestNumber:      reqNum,
-		FullyQualifiedName: mtd.GetFullyQualifiedName(),
-		MethodName:         mtd.GetName(),
-		ServiceName:        mtd.GetService().GetName(),
-		InputName:          mtd.GetInputType().GetName(),
-		OutputName:         mtd.GetOutputType().GetName(),
-		IsClientStreaming:  mtd.IsClientStreaming(),
-		IsServerStreaming:  mtd.IsServerStreaming(),
-		Timestamp:          now.Format(time.RFC3339),
-		TimestampUnix:      now.Unix(),
-		TimestampUnixMilli: now.UnixNano() / 1000000,
-		TimestampUnixNano:  now.UnixNano(),
-		UUID:               newUUID.String(),
-		t:                  t,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Regenerate generates a new instance of call data from this parent instance
 // The dynamic data like timestamps and UUIDs are re-filled
-func (td *CallData) Regenerate() *CallData {
-	now := time.Now()
-	newUUID, _ := uuid.NewRandom()
-
-	return &CallData{
-		WorkerID:           td.WorkerID,
-		RequestNumber:      td.RequestNumber,
-		FullyQualifiedName: td.FullyQualifiedName,
-		MethodName:         td.MethodName,
-		ServiceName:        td.ServiceName,
-		InputName:          td.InputName,
-		OutputName:         td.OutputName,
-		IsClientStreaming:  td.IsClientStreaming,
-		IsServerStreaming:  td.IsServerStreaming,
-		Timestamp:          now.Format(time.RFC3339),
-		TimestampUnix:      now.Unix(),
-		TimestampUnixMilli: now.UnixNano() / 1000000,
-		TimestampUnixNano:  now.UnixNano(),
-		UUID:               newUUID.String(),
-		t:                  td.t,
-	}
-}
+func (td *CallData) Regenerate() *CallData { _ = "STUB: not implemented"; return nil }
 
 func (td *CallData) execute(data string) (*bytes.Buffer, error) {
-	if td.t == nil {
-		return nil, nil
-	}
-
-	t, err := td.t.Parse(data)
-	if err != nil {
-		return nil, err
-	}
-
-	var tpl bytes.Buffer
-	err = t.Execute(&tpl, td)
-	return &tpl, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // This is hacky.
@@ -147,122 +72,30 @@ func (td *CallData) execute(data string) (*bytes.Buffer, error) {
 // The *parse.Tree field is exported only for use by html/template
 // and should be treated as unexported by all other clients.
 func (td *CallData) hasAction(data string) (bool, error) {
-	if td.t == nil {
-		return false, nil
-	}
-
-	t, err := td.t.Parse(data)
-	if err != nil {
-		return false, err
-	}
-
-	hasAction := hasAction(t.Tree.Root)
-	return hasAction, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func hasAction(node parse.Node) bool {
-	has := false
-	if node.Type() == parse.NodeAction {
-		return true
-	} else if ln, ok := node.(*parse.ListNode); ok {
-		for _, n := range ln.Nodes {
-			v := hasAction(n)
-			if !has && v {
-				has = true
-				break
-			}
-		}
-	}
-
-	return has
-}
+func hasAction(node parse.Node) bool { _ = "STUB: not implemented"; return false }
 
 // ExecuteData applies the call data's parsed template and data string and returns the resulting buffer
 func (td *CallData) ExecuteData(data string) ([]byte, error) {
-	if len(data) > 0 {
-		input := []byte(data)
-		tpl, err := td.execute(data)
-		if err != nil {
-			return nil, err
-		}
-		if tpl != nil {
-			input = tpl.Bytes()
-		}
-
-		return input, nil
-	}
-
-	return []byte{}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (td *CallData) executeMetadata(metadata string) (map[string]string, error) {
-	var mdMap map[string]string
-
-	if len(metadata) > 0 {
-		input := []byte(metadata)
-		tpl, err := td.execute(metadata)
-		if err == nil && tpl != nil {
-			input = tpl.Bytes()
-		}
-
-		err = json.Unmarshal(input, &mdMap)
-		if err != nil {
-			return nil, err
-		}
-
-		for key, value := range mdMap {
-			if strings.HasSuffix(key, "-bin") {
-				decoded, err := base64.StdEncoding.DecodeString(value)
-				if err != nil {
-					return nil, err
-				}
-				mdMap[key] = string(decoded)
-			}
-		}
-	}
-
-	return mdMap, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func newUUID() string {
-	newUUID, _ := uuid.NewRandom()
-	return newUUID.String()
-}
+func newUUID() string { _ = "STUB: not implemented"; return "" }
 
 const maxLen = 16
 const minLen = 2
 
-func stringWithCharset(length int, charset string) string {
-	b := make([]byte, length)
-	rng := seededRandPool.Get().(*rand.Rand)
-	defer seededRandPool.Put(rng)
-	for i := range b {
-		b[i] = charset[rng.Intn(len(charset))]
-	}
-	return string(b)
-}
+func stringWithCharset(length int, charset string) string { _ = "STUB: not implemented"; return "" }
 
-func randomString(length int) string {
-	if length <= 0 {
-		func() {
-			rng := seededRandPool.Get().(*rand.Rand)
-			defer seededRandPool.Put(rng)
-			length = rng.Intn(maxLen-minLen+1) + minLen
-		}()
-	}
+func randomString(length int) string { _ = "STUB: not implemented"; return "" }
 
-	return stringWithCharset(length, charset)
-}
-
-func randomInt(min, max int) int {
-	if min < 0 {
-		min = 0
-	}
-
-	if max <= 0 {
-		max = 1
-	}
-	rng := seededRandPool.Get().(*rand.Rand)
-	defer seededRandPool.Put(rng)
-	return rng.Intn(max-min) + min
-}
+func randomInt(min, max int) int { _ = "STUB: not implemented"; return 0 }

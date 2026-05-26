@@ -4,10 +4,9 @@ package wrapped
 
 import (
 	context "context"
+
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -28,25 +27,18 @@ type wrappedServiceClient struct {
 }
 
 func NewWrappedServiceClient(cc grpc.ClientConnInterface) WrappedServiceClient {
-	return &wrappedServiceClient{cc}
+	_ = "STUB: not implemented"
+	return *new(WrappedServiceClient)
 }
 
 func (c *wrappedServiceClient) GetMessage(ctx context.Context, in *wrappers.StringValue, opts ...grpc.CallOption) (*wrappers.StringValue, error) {
-	out := new(wrappers.StringValue)
-	err := c.cc.Invoke(ctx, "/wrapped.WrappedService/GetMessage", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *wrappedServiceClient) GetBytesMessage(ctx context.Context, in *wrappers.BytesValue, opts ...grpc.CallOption) (*wrappers.BytesValue, error) {
-	out := new(wrappers.BytesValue)
-	err := c.cc.Invoke(ctx, "/wrapped.WrappedService/GetBytesMessage", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WrappedServiceServer is the server API for WrappedService service.
@@ -63,58 +55,41 @@ type UnimplementedWrappedServiceServer struct {
 }
 
 func (UnimplementedWrappedServiceServer) GetMessage(context.Context, *wrappers.StringValue) (*wrappers.StringValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMessage not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedWrappedServiceServer) GetBytesMessage(context.Context, *wrappers.BytesValue) (*wrappers.BytesValue, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBytesMessage not implemented")
-}
-func (UnimplementedWrappedServiceServer) mustEmbedUnimplementedWrappedServiceServer() {}
 
-// UnsafeWrappedServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to WrappedServiceServer will
-// result in compilation errors.
+func (UnimplementedWrappedServiceServer) GetBytesMessage(context.Context, *wrappers.BytesValue) (*wrappers.BytesValue, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedWrappedServiceServer) mustEmbedUnimplementedWrappedServiceServer() {
+	_ = "STUB: not implemented"
+
+	// UnsafeWrappedServiceServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to WrappedServiceServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeWrappedServiceServer interface {
 	mustEmbedUnimplementedWrappedServiceServer()
 }
 
 func RegisterWrappedServiceServer(s grpc.ServiceRegistrar, srv WrappedServiceServer) {
-	s.RegisterService(&WrappedService_ServiceDesc, srv)
+	_ = "STUB: not implemented"
+	return
 }
 
 func _WrappedService_GetMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(wrappers.StringValue)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WrappedServiceServer).GetMessage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/wrapped.WrappedService/GetMessage",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WrappedServiceServer).GetMessage(ctx, req.(*wrappers.StringValue))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _WrappedService_GetBytesMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(wrappers.BytesValue)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WrappedServiceServer).GetBytesMessage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/wrapped.WrappedService/GetBytesMessage",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WrappedServiceServer).GetBytesMessage(ctx, req.(*wrappers.BytesValue))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WrappedService_ServiceDesc is the grpc.ServiceDesc for WrappedService service.

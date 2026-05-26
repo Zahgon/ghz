@@ -2,8 +2,6 @@ package model
 
 import (
 	"database/sql/driver"
-	"encoding/json"
-	"errors"
 	"time"
 
 	"github.com/bojand/ghz/runner"
@@ -14,34 +12,13 @@ type LatencyDistributionList []*runner.LatencyDistribution
 
 // Value converts struct to a database value
 func (ld LatencyDistributionList) Value() (driver.Value, error) {
-	v, err := json.Marshal(ld)
-	if err != nil {
-		return nil, err
-	}
-	return string(v), nil
+	_ = "STUB: not implemented"
+	return *new(driver.Value), nil
 }
 
 // Scan converts database value to a struct
 func (ld *LatencyDistributionList) Scan(src interface{}) error {
-	var sourceStr string
-	sourceByte, ok := src.([]byte)
-	if !ok {
-		sourceStr, ok = src.(string)
-		if !ok {
-			return errors.New("type assertion from string / byte")
-		}
-		sourceByte = []byte(sourceStr)
-	}
-
-	var lds []runner.LatencyDistribution
-	if err := json.Unmarshal(sourceByte, &lds); err != nil {
-		return err
-	}
-
-	for index := range lds {
-		*ld = append(*ld, &lds[index])
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -50,62 +27,24 @@ type StringIntMap map[string]int
 
 // Value converts map to database value
 func (m StringIntMap) Value() (driver.Value, error) {
-	v, err := json.Marshal(m)
-	if err != nil {
-		return nil, err
-	}
-	return string(v), nil
+	_ = "STUB: not implemented"
+	return *new(driver.Value), nil
 }
 
 // Scan converts database value to a map
-func (m *StringIntMap) Scan(src interface{}) error {
-	var sourceStr string
-	sourceByte, ok := src.([]byte)
-	if !ok {
-		sourceStr, ok = src.(string)
-		if !ok {
-			return errors.New("type assertion from string / byte")
-		}
-		sourceByte = []byte(sourceStr)
-	}
-
-	if err := json.Unmarshal(sourceByte, m); err != nil {
-		return err
-	}
-
-	return nil
-}
+func (m *StringIntMap) Scan(src interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // StringStringMap is a map of string keys to int values
 type StringStringMap map[string]string
 
 // Value converts map to database value
 func (m StringStringMap) Value() (driver.Value, error) {
-	v, err := json.Marshal(m)
-	if err != nil {
-		return nil, err
-	}
-	return string(v), nil
+	_ = "STUB: not implemented"
+	return *new(driver.Value), nil
 }
 
 // Scan converts database value to a map
-func (m *StringStringMap) Scan(src interface{}) error {
-	var sourceStr string
-	sourceByte, ok := src.([]byte)
-	if !ok {
-		sourceStr, ok = src.(string)
-		if !ok {
-			return errors.New("type assertion from string / byte")
-		}
-		sourceByte = []byte(sourceStr)
-	}
-
-	if err := json.Unmarshal(sourceByte, m); err != nil {
-		return err
-	}
-
-	return nil
-}
+func (m *StringStringMap) Scan(src interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // Report represents a project
 type Report struct {
@@ -136,14 +75,4 @@ type Report struct {
 }
 
 // BeforeSave is called by GORM before save
-func (r *Report) BeforeSave() error {
-	if r.ProjectID == 0 && r.Project == nil {
-		return errors.New("Report must belong to a project")
-	}
-
-	if string(r.Status) == "" {
-		r.Status = StatusOK
-	}
-
-	return nil
-}
+func (r *Report) BeforeSave() error { _ = "STUB: not implemented"; return nil }

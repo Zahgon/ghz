@@ -11,7 +11,6 @@ import (
 	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
 )
 
 const (
@@ -62,26 +61,5 @@ var file_wrapped_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_wrapped_proto_init() }
-func file_wrapped_proto_init() {
-	if File_wrapped_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_wrapped_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   0,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_wrapped_proto_goTypes,
-		DependencyIndexes: file_wrapped_proto_depIdxs,
-	}.Build()
-	File_wrapped_proto = out.File
-	file_wrapped_proto_rawDesc = nil
-	file_wrapped_proto_goTypes = nil
-	file_wrapped_proto_depIdxs = nil
-}
+func init()                    { file_wrapped_proto_init() }
+func file_wrapped_proto_init() { _ = "STUB: not implemented"; return }

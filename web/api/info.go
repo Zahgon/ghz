@@ -1,8 +1,6 @@
 package api
 
 import (
-	"net/http"
-	"runtime"
 	"time"
 
 	"github.com/labstack/echo"
@@ -66,24 +64,6 @@ type InfoAPI struct {
 
 // GetApplicationInfo gets application info
 func (api *InfoAPI) GetApplicationInfo(ctx echo.Context) error {
-	memStats := &runtime.MemStats{}
-	runtime.ReadMemStats(memStats)
-
-	ir := InfoResponse{
-		Version:        api.Info.Version,
-		RuntimeVersion: api.Info.GOVersion,
-		BuildDate:      api.Info.BuildDate,
-		Uptime:         time.Since(api.Info.StartTime).String(),
-		MemoryInfo: &MemoryInfo{
-			Alloc:      memStats.Alloc,
-			TotalAlloc: memStats.TotalAlloc,
-			System:     memStats.Sys,
-			Lookups:    memStats.Lookups,
-			Mallocs:    memStats.Mallocs,
-			Frees:      memStats.Frees,
-			NumGC:      memStats.NumGC,
-		},
-	}
-
-	return ctx.JSON(http.StatusOK, ir)
+	_ = "STUB: not implemented"
+	return nil
 }

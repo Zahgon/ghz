@@ -6,16 +6,10 @@ package sleep
 import (
 	context "context"
 	fmt "fmt"
-	io "io"
 	math "math"
-	math_bits "math/bits"
-	reflect "reflect"
-	strings "strings"
 
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -33,77 +27,46 @@ type SleepRequest struct {
 	Milliseconds int64 `protobuf:"varint,1,opt,name=Milliseconds,proto3" json:"Milliseconds,omitempty"`
 }
 
-func (m *SleepRequest) Reset()      { *m = SleepRequest{} }
-func (*SleepRequest) ProtoMessage() {}
-func (*SleepRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{0}
-}
-func (m *SleepRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
+func (m *SleepRequest) Reset()                    { _ = "STUB: not implemented"; return }
+func (*SleepRequest) ProtoMessage()               { _ = "STUB: not implemented"; return }
+func (*SleepRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
+
+func (m *SleepRequest) XXX_Unmarshal(b []byte) error { _ = "STUB: not implemented"; return nil }
+
 func (m *SleepRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_SleepRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (m *SleepRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SleepRequest.Merge(m, src)
-}
-func (m *SleepRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *SleepRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_SleepRequest.DiscardUnknown(m)
-}
+
+func (m *SleepRequest) XXX_Merge(src proto.Message) { _ = "STUB: not implemented"; return }
+
+func (m *SleepRequest) XXX_Size() int { _ = "STUB: not implemented"; return 0 }
+
+func (m *SleepRequest) XXX_DiscardUnknown() { _ = "STUB: not implemented"; return }
 
 var xxx_messageInfo_SleepRequest proto.InternalMessageInfo
 
-func (m *SleepRequest) GetMilliseconds() int64 {
-	if m != nil {
-		return m.Milliseconds
-	}
-	return 0
-}
+func (m *SleepRequest) GetMilliseconds() int64 { _ = "STUB: not implemented"; return 0 }
 
 type SleepResponse struct {
 }
 
-func (m *SleepResponse) Reset()      { *m = SleepResponse{} }
-func (*SleepResponse) ProtoMessage() {}
-func (*SleepResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{1}
-}
-func (m *SleepResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
+func (m *SleepResponse) Reset()                    { _ = "STUB: not implemented"; return }
+func (*SleepResponse) ProtoMessage()               { _ = "STUB: not implemented"; return }
+func (*SleepResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
+
+func (m *SleepResponse) XXX_Unmarshal(b []byte) error { _ = "STUB: not implemented"; return nil }
+
 func (m *SleepResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_SleepResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (m *SleepResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SleepResponse.Merge(m, src)
-}
-func (m *SleepResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *SleepResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_SleepResponse.DiscardUnknown(m)
-}
+
+func (m *SleepResponse) XXX_Merge(src proto.Message) { _ = "STUB: not implemented"; return }
+
+func (m *SleepResponse) XXX_Size() int { _ = "STUB: not implemented"; return 0 }
+
+func (m *SleepResponse) XXX_DiscardUnknown() { _ = "STUB: not implemented"; return }
 
 var xxx_messageInfo_SleepResponse proto.InternalMessageInfo
 
@@ -130,78 +93,15 @@ var fileDescriptor_a0b84a42fa06f626 = []byte{
 	0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x27, 0xe6, 0xf2, 0x8c, 0xdd, 0x00, 0x00, 0x00,
 }
 
-func (this *SleepRequest) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
+func (this *SleepRequest) Equal(that interface{}) bool { _ = "STUB: not implemented"; return false }
 
-	that1, ok := that.(*SleepRequest)
-	if !ok {
-		that2, ok := that.(SleepRequest)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.Milliseconds != that1.Milliseconds {
-		return false
-	}
-	return true
-}
-func (this *SleepResponse) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
+func (this *SleepResponse) Equal(that interface{}) bool { _ = "STUB: not implemented"; return false }
 
-	that1, ok := that.(*SleepResponse)
-	if !ok {
-		that2, ok := that.(SleepResponse)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	return true
-}
-func (this *SleepRequest) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 5)
-	s = append(s, "&main.SleepRequest{")
-	s = append(s, "Milliseconds: "+fmt.Sprintf("%#v", this.Milliseconds)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *SleepResponse) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 4)
-	s = append(s, "&main.SleepResponse{")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func valueToGoStringService(v interface{}, typ string) string {
-	rv := reflect.ValueOf(v)
-	if rv.IsNil() {
-		return "nil"
-	}
-	pv := reflect.Indirect(rv).Interface()
-	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
-}
+func (this *SleepRequest) GoString() string { _ = "STUB: not implemented"; return "" }
+
+func (this *SleepResponse) GoString() string { _ = "STUB: not implemented"; return "" }
+
+func valueToGoStringService(v interface{}, typ string) string { _ = "STUB: not implemented"; return "" }
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
@@ -223,16 +123,13 @@ type sleepServiceClient struct {
 }
 
 func NewSleepServiceClient(cc *grpc.ClientConn) SleepServiceClient {
-	return &sleepServiceClient{cc}
+	_ = "STUB: not implemented"
+	return *new(SleepServiceClient)
 }
 
 func (c *sleepServiceClient) SleepFor(ctx context.Context, in *SleepRequest, opts ...grpc.CallOption) (*SleepResponse, error) {
-	out := new(SleepResponse)
-	err := c.cc.Invoke(ctx, "/main.SleepService/SleepFor", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SleepServiceServer is the server API for SleepService service.
@@ -245,29 +142,18 @@ type UnimplementedSleepServiceServer struct {
 }
 
 func (*UnimplementedSleepServiceServer) SleepFor(ctx context.Context, req *SleepRequest) (*SleepResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SleepFor not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func RegisterSleepServiceServer(s *grpc.Server, srv SleepServiceServer) {
-	s.RegisterService(&_SleepService_serviceDesc, srv)
+	_ = "STUB: not implemented"
+	return
 }
 
 func _SleepService_SleepFor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SleepRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SleepServiceServer).SleepFor(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/main.SleepService/SleepFor",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SleepServiceServer).SleepFor(ctx, req.(*SleepRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var _SleepService_serviceDesc = grpc.ServiceDesc{
@@ -284,351 +170,59 @@ var _SleepService_serviceDesc = grpc.ServiceDesc{
 }
 
 func (m *SleepRequest) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *SleepRequest) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (m *SleepRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.Milliseconds != 0 {
-		i = encodeVarintService(dAtA, i, uint64(m.Milliseconds))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (m *SleepResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *SleepResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (m *SleepResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func encodeVarintService(dAtA []byte, offset int, v uint64) int {
-	offset -= sovService(v)
-	base := offset
-	for v >= 1<<7 {
-		dAtA[offset] = uint8(v&0x7f | 0x80)
-		v >>= 7
-		offset++
-	}
-	dAtA[offset] = uint8(v)
-	return base
-}
-func (m *SleepRequest) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.Milliseconds != 0 {
-		n += 1 + sovService(uint64(m.Milliseconds))
-	}
-	return n
+	_ = "STUB: not implemented"
+	return 0
 }
 
-func (m *SleepResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
+func (m *SleepRequest) Size() (n int) { _ = "STUB: not implemented"; return 0 }
 
-func sovService(x uint64) (n int) {
-	return (math_bits.Len64(x|1) + 6) / 7
-}
-func sozService(x uint64) (n int) {
-	return sovService(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func (this *SleepRequest) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&SleepRequest{`,
-		`Milliseconds:` + fmt.Sprintf("%v", this.Milliseconds) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *SleepResponse) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&SleepResponse{`,
-		`}`,
-	}, "")
-	return s
-}
-func valueToStringService(v interface{}) string {
-	rv := reflect.ValueOf(v)
-	if rv.IsNil() {
-		return "nil"
-	}
-	pv := reflect.Indirect(rv).Interface()
-	return fmt.Sprintf("*%v", pv)
-}
-func (m *SleepRequest) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowService
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: SleepRequest: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SleepRequest: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Milliseconds", wireType)
-			}
-			m.Milliseconds = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowService
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Milliseconds |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipService(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthService
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthService
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
+func (m *SleepResponse) Size() (n int) { _ = "STUB: not implemented"; return 0 }
 
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *SleepResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowService
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: SleepResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: SleepResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipService(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthService
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthService
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
+func sovService(x uint64) (n int) { _ = "STUB: not implemented"; return 0 }
 
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func skipService(dAtA []byte) (n int, err error) {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return 0, ErrIntOverflowService
-			}
-			if iNdEx >= l {
-				return 0, io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		wireType := int(wire & 0x7)
-		switch wireType {
-		case 0:
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return 0, ErrIntOverflowService
-				}
-				if iNdEx >= l {
-					return 0, io.ErrUnexpectedEOF
-				}
-				iNdEx++
-				if dAtA[iNdEx-1] < 0x80 {
-					break
-				}
-			}
-			return iNdEx, nil
-		case 1:
-			iNdEx += 8
-			return iNdEx, nil
-		case 2:
-			var length int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return 0, ErrIntOverflowService
-				}
-				if iNdEx >= l {
-					return 0, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				length |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if length < 0 {
-				return 0, ErrInvalidLengthService
-			}
-			iNdEx += length
-			if iNdEx < 0 {
-				return 0, ErrInvalidLengthService
-			}
-			return iNdEx, nil
-		case 3:
-			for {
-				var innerWire uint64
-				var start int = iNdEx
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflowService
-					}
-					if iNdEx >= l {
-						return 0, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					innerWire |= (uint64(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				innerWireType := int(innerWire & 0x7)
-				if innerWireType == 4 {
-					break
-				}
-				next, err := skipService(dAtA[start:])
-				if err != nil {
-					return 0, err
-				}
-				iNdEx = start + next
-				if iNdEx < 0 {
-					return 0, ErrInvalidLengthService
-				}
-			}
-			return iNdEx, nil
-		case 4:
-			return iNdEx, nil
-		case 5:
-			iNdEx += 4
-			return iNdEx, nil
-		default:
-			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
-		}
-	}
-	panic("unreachable")
-}
+func sozService(x uint64) (n int) { _ = "STUB: not implemented"; return 0 }
+
+func (this *SleepRequest) String() string { _ = "STUB: not implemented"; return "" }
+
+func (this *SleepResponse) String() string { _ = "STUB: not implemented"; return "" }
+
+func valueToStringService(v interface{}) string { _ = "STUB: not implemented"; return "" }
+
+func (m *SleepRequest) Unmarshal(dAtA []byte) error { _ = "STUB: not implemented"; return nil }
+
+func (m *SleepResponse) Unmarshal(dAtA []byte) error { _ = "STUB: not implemented"; return nil }
+
+func skipService(dAtA []byte) (n int, err error) { _ = "STUB: not implemented"; return 0, nil }
 
 var (
 	ErrInvalidLengthService = fmt.Errorf("proto: negative length found during unmarshaling")

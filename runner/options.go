@@ -1,26 +1,14 @@
 package runner
 
 import (
-	"crypto/tls"
-	"crypto/x509"
-	"encoding/json"
-	"fmt"
 	"io"
-	"math"
-	"os"
-	"path/filepath"
-	"runtime"
-	"strings"
 	"text/template"
 	"time"
 
 	"github.com/bojand/ghz/load"
 	"github.com/jhump/protoreflect/desc"
-	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-
-	humanize "github.com/dustin/go-humanize"
 )
 
 // BinaryDataFunc is a function that can be used for provide binary data for request programatically.
@@ -143,346 +131,107 @@ type Option func(*RunConfig) error
 
 // NewConfig creates a new RunConfig from the options passed
 func NewConfig(call, host string, options ...Option) (*RunConfig, error) {
+	_ = "STUB: not implemented"
 
 	// init with defaults
-	c := &RunConfig{
-		n:            200,
-		c:            50,
-		nConns:       1,
-		timeout:      time.Duration(20 * time.Second),
-		dialTimeout:  time.Duration(10 * time.Second),
-		cpus:         runtime.GOMAXPROCS(-1),
-		zstop:        "close",
-		loadSchedule: ScheduleConst,
-	}
-
-	// apply options
-	for _, option := range options {
-		err := option(c)
-
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// host and call may have been applied via options
-	// only override if not present
-	if c.host == "" {
-		c.host = strings.TrimSpace(host)
-	}
-
-	if c.call == "" {
-		c.call = strings.TrimSpace(call)
-	}
-
-	// fix up durations
-	if c.z > 0 {
-		c.n = math.MaxInt32
-	}
-
-	// checks
-	if c.nConns > c.c {
-		return nil, errors.New("number of connections cannot be greater than concurrency")
-	}
-
-	if c.call == "" {
-		return nil, errors.New("call required")
-	}
-
-	if c.host == "" {
-		return nil, errors.New("host required")
-	}
-
-	if c.binary && c.streamDynamicMessages {
-		return nil, errors.New("cannot use dynamic messages with binary data")
-	}
-
-	if c.loadSchedule != ScheduleConst &&
-		c.loadSchedule != ScheduleStep &&
-		c.loadSchedule != ScheduleLine {
-		return nil, fmt.Errorf(`schedule much be "%s", "%s", or "%s"`,
-			ScheduleConst, ScheduleStep, ScheduleLine)
-	}
-
-	if c.loadSchedule == ScheduleStep || c.loadSchedule == ScheduleLine {
-		if c.loadStart == c.loadEnd {
-			return nil, errors.New("load start cannot equal load end")
-		}
-
-		// step value for step schedule or
-		// slope for line schedule
-		if c.loadStep == 0 {
-			return nil, errors.New("invalid load step")
-		}
-
-		if c.loadSchedule == ScheduleStep && c.loadStepDuration == 0 {
-			return nil, errors.New("invalid load step duration")
-		}
-	}
-
-	if c.cSchedule == ScheduleStep || c.cSchedule == ScheduleLine {
-		if c.cStart == c.cEnd {
-			return nil, errors.New("concurrency start start cannot equal concurrency end")
-		}
-
-		// step value for step schedule or
-		// slope for line schedule
-		if c.cStep == 0 {
-			return nil, errors.New("invalid concurrency step")
-		}
-
-		if c.cSchedule == ScheduleStep && c.cStepDuration == 0 {
-			return nil, errors.New("invalid concurrency step duration")
-		}
-	}
-
-	if c.loadSchedule == ScheduleLine {
-		c.loadStepDuration = time.Second
-	}
-
-	if c.cSchedule == ScheduleLine {
-		c.cStepDuration = time.Second
-	}
-
-	if c.skipFirst > 0 && int(c.skipFirst) > c.n {
-		return nil, errors.New("you cannot skip more requests than those run")
-	}
-
-	creds, err := createClientTransportCredentials(
-		c.skipVerify,
-		c.cacert,
-		c.cert,
-		c.key,
-		c.cname,
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
-	c.creds = creds
-
-	return c, nil
+	return nil, nil
 }
+
+// apply options
+
+// host and call may have been applied via options
+// only override if not present
+
+// fix up durations
+
+// checks
+
+// step value for step schedule or
+// slope for line schedule
+
+// step value for step schedule or
+// slope for line schedule
 
 // WithConfigFromFile uses a configuration JSON file to populate the RunConfig
 //
 //	WithConfigFromFile("config.json")
-func WithConfigFromFile(file string) Option {
-	return func(o *RunConfig) error {
-		var cfg Config
-		err := LoadConfig(file, &cfg)
-		if err != nil {
-			return err
-		}
-
-		for _, option := range fromConfig(&cfg) {
-			if err := option(o); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-}
+func WithConfigFromFile(file string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConfigFromReader uses a reader containing JSON data to populate the RunConfig
 // See also: WithConfigFromFile
-func WithConfigFromReader(reader io.Reader) Option {
-	return func(o *RunConfig) error {
-		var cfg Config
-		if err := json.NewDecoder(reader).Decode(&cfg); err != nil {
-			return fmt.Errorf("unmarshal config: %w", err)
-		}
-
-		for _, option := range fromConfig(&cfg) {
-			if err := option(o); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-}
+func WithConfigFromReader(reader io.Reader) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConfig uses the configuration to populate the RunConfig
 // See also: WithConfigFromFile, WithConfigFromReader
-func WithConfig(cfg *Config) Option {
-	return func(o *RunConfig) error {
+func WithConfig(cfg *Config) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-		// init / fix up durations
-		if cfg.X > 0 {
-			cfg.Z = cfg.X
-		} else if cfg.Z > 0 {
-			cfg.N = math.MaxInt32
-		}
-
-		for _, option := range fromConfig(cfg) {
-			if err := option(o); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-}
+// init / fix up durations
 
 // WithCertificate specifies the certificate options for the run
 //
 //	WithCertificate("client.crt", "client.key")
-func WithCertificate(cert, key string) Option {
-	return func(o *RunConfig) error {
-		cert = strings.TrimSpace(cert)
-		key = strings.TrimSpace(key)
-
-		o.cert = cert
-		o.key = key
-
-		return nil
-	}
-}
+func WithCertificate(cert, key string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithServerNameOverride specifies the certificate options for the run
-func WithServerNameOverride(cname string) Option {
-	return func(o *RunConfig) error {
-		o.cname = cname
-
-		return nil
-	}
-}
+func WithServerNameOverride(cname string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithAuthority specifies the value to be used as the :authority pseudo-header.
 // This only works with WithInsecure option.
-func WithAuthority(authority string) Option {
-	return func(o *RunConfig) error {
-		o.authority = authority
-
-		return nil
-	}
-}
+func WithAuthority(authority string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithRootCertificate specifies the root certificate options for the run
 //
 //	WithRootCertificate("ca.crt")
-func WithRootCertificate(cert string) Option {
-	return func(o *RunConfig) error {
-		cert = strings.TrimSpace(cert)
-
-		o.cacert = cert
-
-		return nil
-	}
-}
+func WithRootCertificate(cert string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithInsecure specifies that this run should be done using insecure mode
 //
 //	WithInsecure(true)
-func WithInsecure(insec bool) Option {
-	return func(o *RunConfig) error {
-		o.insecure = insec
-
-		return nil
-	}
-}
+func WithInsecure(insec bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithSkipTLSVerify skip client side TLS verification of server certificate
-func WithSkipTLSVerify(skip bool) Option {
-	return func(o *RunConfig) error {
-		o.skipVerify = skip
-
-		return nil
-	}
-}
+func WithSkipTLSVerify(skip bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithTotalRequests specifies the N (number of total requests) setting
 //
 //	WithTotalRequests(1000)
-func WithTotalRequests(n uint) Option {
-	return func(o *RunConfig) error {
-		o.n = int(n)
-
-		return nil
-	}
-}
+func WithTotalRequests(n uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConcurrency specifies the C (number of concurrent requests) option
 //
 //	WithConcurrency(20)
-func WithConcurrency(c uint) Option {
-	return func(o *RunConfig) error {
-		o.c = int(c)
-
-		return nil
-	}
-}
+func WithConcurrency(c uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithRPS specifies the RPS (requests per second) limit option
 //
 //	WithRPS(10)
-func WithRPS(v uint) Option {
-	return func(o *RunConfig) error {
-		o.rps = int(v)
-
-		return nil
-	}
-}
+func WithRPS(v uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithRunDuration specifies the Z (total test duration) option
 //
 //	WithRunDuration(time.Duration(2*time.Minute))
-func WithRunDuration(z time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.z = z
-
-		return nil
-	}
-}
+func WithRunDuration(z time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDurationStopAction specifies how run duration (Z) timeout is handled
 // Possible options are "close", "ignore", and "wait"
 //
 //	WithDurationStopAction("ignore")
-func WithDurationStopAction(action string) Option {
-	return func(o *RunConfig) error {
-		action = strings.ToLower(action)
-
-		if action == "close" || action == "wait" || action == "ignore" {
-			o.zstop = action
-		}
-
-		return nil
-	}
-}
+func WithDurationStopAction(action string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithTimeout specifies the timeout for each request
 //
 //	WithTimeout(time.Duration(20*time.Second))
-func WithTimeout(timeout time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.timeout = timeout
-
-		return nil
-	}
-}
+func WithTimeout(timeout time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDialTimeout specifies the initial connection dial timeout
 //
 //	WithDialTimeout(time.Duration(20*time.Second))
-func WithDialTimeout(dt time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.dialTimeout = dt
-
-		return nil
-	}
-}
+func WithDialTimeout(dt time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithKeepalive specifies the keepalive timeout
 //
 //	WithKeepalive(time.Duration(1*time.Minute))
-func WithKeepalive(k time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.keepaliveTime = k
-
-		return nil
-	}
-}
+func WithKeepalive(k time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithBinaryData specifies the binary data
 //
@@ -490,127 +239,51 @@ func WithKeepalive(k time.Duration) Option {
 //	msg.Name = "bob"
 //	binData, _ := proto.Marshal(msg)
 //	WithBinaryData(binData)
-func WithBinaryData(data []byte) Option {
-	return func(o *RunConfig) error {
-		o.data = data
-		o.binary = true
-
-		return nil
-	}
-}
+func WithBinaryData(data []byte) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithClientLoadBalancing specifies the LB strategy to use
 // The strategies has to be self written and pre defined
 func WithClientLoadBalancing(strategy string) Option {
-	return func(o *RunConfig) error {
-		o.lbStrategy = strategy
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithBinaryDataFunc specifies the binary data func which will be called on each request
 //
 //	WithBinaryDataFunc(changeFunc)
 func WithBinaryDataFunc(data func(mtd *desc.MethodDescriptor, callData *CallData) []byte) Option {
-	return func(o *RunConfig) error {
-		o.dataFunc = data
-		o.binary = true
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithBinaryDataFromFile specifies the binary data
 //
 //	WithBinaryDataFromFile("request_data.bin")
-func WithBinaryDataFromFile(path string) Option {
-	return func(o *RunConfig) error {
-		data, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		o.data = data
-		o.binary = true
-
-		return nil
-	}
-}
+func WithBinaryDataFromFile(path string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDataFromJSON loads JSON data from string
 //
 //	WithDataFromJSON(`{"name":"bob"}`)
-func WithDataFromJSON(data string) Option {
-	return func(o *RunConfig) error {
-		o.data = []byte(data)
-		o.binary = false
-
-		return nil
-	}
-}
+func WithDataFromJSON(data string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithData specifies data as generic data that can be serailized to JSON
-func WithData(data interface{}) Option {
-	return func(o *RunConfig) error {
-		dataJSON, err := json.Marshal(data)
-
-		if err != nil {
-			return err
-		}
-
-		o.data = dataJSON
-		o.binary = false
-
-		return nil
-	}
-}
+func WithData(data interface{}) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDataFromReader loads JSON data from reader
 //
 //	file, _ := os.Open("data.json")
 //	WithDataFromReader(file)
-func WithDataFromReader(r io.Reader) Option {
-	return func(o *RunConfig) error {
-		data, err := io.ReadAll(r)
-		if err != nil {
-			return err
-		}
-
-		o.data = data
-		o.binary = false
-
-		return nil
-	}
-}
+func WithDataFromReader(r io.Reader) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDataFromFile loads JSON data from file
 //
 //	WithDataFromFile("data.json")
-func WithDataFromFile(path string) Option {
-	return func(o *RunConfig) error {
-		data, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		o.data = data
-		o.binary = false
-
-		return nil
-	}
-}
+func WithDataFromFile(path string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithMetadataFromJSON specifies the metadata to be read from JSON string
 //
 //	WithMetadataFromJSON(`{"request-id":"123"}`)
-func WithMetadataFromJSON(md string) Option {
-	return func(o *RunConfig) error {
-		o.metadata = []byte(md)
-
-		return nil
-	}
-}
+func WithMetadataFromJSON(md string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithMetadata specifies the metadata to be used as a map
 //
@@ -618,48 +291,17 @@ func WithMetadataFromJSON(md string) Option {
 //	md["token"] = "foobar"
 //	md["request-id"] = "123"
 //	WithMetadata(&md)
-func WithMetadata(md map[string]string) Option {
-	return func(o *RunConfig) error {
-		mdJSON, err := json.Marshal(md)
-		if err != nil {
-			return err
-		}
-
-		o.metadata = mdJSON
-
-		return nil
-	}
-}
+func WithMetadata(md map[string]string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithMetadataFromFile loads JSON metadata from file
 //
 //	WithMetadataFromJSON("metadata.json")
-func WithMetadataFromFile(path string) Option {
-	return func(o *RunConfig) error {
-		mdJSON, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		o.metadata = mdJSON
-
-		return nil
-	}
-}
+func WithMetadataFromFile(path string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithName sets the name of the test run
 //
 //	WithName("greeter service test")
-func WithName(name string) Option {
-	return func(o *RunConfig) error {
-		name = strings.TrimSpace(name)
-		if name != "" {
-			o.name = name
-		}
-
-		return nil
-	}
-}
+func WithName(name string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithTags specifies the user defined tags as a map
 //
@@ -667,137 +309,46 @@ func WithName(name string) Option {
 //	tags["env"] = "staging"
 //	tags["created by"] = "joe developer"
 //	WithTags(&tags)
-func WithTags(tags map[string]string) Option {
-	return func(o *RunConfig) error {
-		tagsJSON, err := json.Marshal(tags)
-		if err != nil {
-			return err
-		}
-
-		o.tags = tagsJSON
-
-		return nil
-	}
-}
+func WithTags(tags map[string]string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithCPUs specifies the number of CPU's to be used
 //
 //	WithCPUs(4)
-func WithCPUs(c uint) Option {
-	return func(o *RunConfig) error {
-		if c > 0 {
-			o.cpus = int(c)
-		}
-
-		return nil
-	}
-}
+func WithCPUs(c uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithSkipFirst is the skipFirst option
-func WithSkipFirst(c uint) Option {
-	return func(o *RunConfig) error {
-		if c > 0 {
-			o.skipFirst = int(c)
-		}
-
-		return nil
-	}
-}
+func WithSkipFirst(c uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithCountErrors is the count errors option
-func WithCountErrors(v bool) Option {
-	return func(o *RunConfig) error {
-		o.countErrors = v
-
-		return nil
-	}
-}
+func WithCountErrors(v bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithProtoFile specified proto file path and optionally import paths
 // We will automatically add the proto file path's directory and the current directory
 //
 //	WithProtoFile("greeter.proto", []string{"/home/protos"})
 func WithProtoFile(proto string, importPaths []string) Option {
-	return func(o *RunConfig) error {
-		proto = strings.TrimSpace(proto)
-		if proto != "" {
-			if filepath.Ext(proto) != ".proto" {
-				return errors.New("proto: must have .proto extension")
-			}
-
-			o.proto = proto
-
-			dir := filepath.Dir(proto)
-			if dir != "." {
-				o.importPaths = append(o.importPaths, dir)
-			}
-
-			o.importPaths = append(o.importPaths, ".")
-
-			if len(importPaths) > 0 {
-				o.importPaths = append(o.importPaths, importPaths...)
-			}
-		}
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithProtoset specified protoset file path
 //
 //	WithProtoset("bundle.protoset")
-func WithProtoset(protoset string) Option {
-	return func(o *RunConfig) error {
-		protoset = strings.TrimSpace(protoset)
-		o.protoset = protoset
+func WithProtoset(protoset string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-		return nil
-	}
-}
-
-func WithProtosetBinary(b []byte) Option {
-	return func(o *RunConfig) error {
-		o.protosetBinary = b
-
-		return nil
-	}
-}
+func WithProtosetBinary(b []byte) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithStreamInterval sets the stream interval
-func WithStreamInterval(d time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.streamInterval = d
-
-		return nil
-	}
-}
+func WithStreamInterval(d time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithStreamCallDuration sets the maximum stream call duration at which point the client will close the stream
-func WithStreamCallDuration(d time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.streamCallDuration = d
-
-		return nil
-	}
-}
+func WithStreamCallDuration(d time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithStreamCallCount sets the stream close count
-func WithStreamCallCount(c uint) Option {
-	return func(o *RunConfig) error {
-		o.streamCallCount = c
-
-		return nil
-	}
-}
+func WithStreamCallCount(c uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithStreamDynamicMessages sets the stream dynamic message generation
-func WithStreamDynamicMessages(v bool) Option {
-	return func(o *RunConfig) error {
-		o.streamDynamicMessages = v
-
-		return nil
-	}
-}
+func WithStreamDynamicMessages(v bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithReflectionMetadata specifies the metadata to be used as a map
 //
@@ -806,211 +357,109 @@ func WithStreamDynamicMessages(v bool) Option {
 //	md["request-id"] = "123"
 //	WithReflectionMetadata(&md)
 func WithReflectionMetadata(md map[string]string) Option {
-	return func(o *RunConfig) error {
-		o.rmd = md
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithConnections specifies the number of gRPC connections to use
 //
 //	WithConnections(5)
-func WithConnections(c uint) Option {
-	return func(o *RunConfig) error {
-		if c > 0 {
-			o.nConns = int(c)
-		}
-
-		return nil
-	}
-}
+func WithConnections(c uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLogger specifies the logging option
-func WithLogger(log Logger) Option {
-	return func(o *RunConfig) error {
-		o.log = log
-		o.hasLog = true
-
-		return nil
-	}
-}
+func WithLogger(log Logger) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithTemplateFuncs adds additional template functions
 func WithTemplateFuncs(funcMap template.FuncMap) Option {
-	return func(o *RunConfig) error {
-		o.funcs = funcMap
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithEnableCompression specifies that requests should be done using gzip Compressor
 //
 //	WithEnableCompression(true)
 func WithEnableCompression(enableCompression bool) Option {
-	return func(o *RunConfig) error {
-		o.enableCompression = enableCompression
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithLoadSchedule specifies the load schedule
 //
 //	WithLoadSchedule("const")
-func WithLoadSchedule(schedule string) Option {
-	return func(o *RunConfig) error {
-		s := strings.TrimSpace(schedule)
-		if len(s) > 0 {
-			o.loadSchedule = strings.ToLower(s)
-		}
-
-		return nil
-	}
-}
+func WithLoadSchedule(schedule string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLoadStart specifies the load start
 //
 //	WithLoadStart(5)
-func WithLoadStart(start uint) Option {
-	return func(o *RunConfig) error {
-		o.loadStart = start
-
-		return nil
-	}
-}
+func WithLoadStart(start uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLoadEnd specifies the load end
 //
 //	WithLoadEnd(25)
-func WithLoadEnd(end uint) Option {
-	return func(o *RunConfig) error {
-		o.loadEnd = end
-
-		return nil
-	}
-}
+func WithLoadEnd(end uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLoadStep specifies the load step
 //
 //	WithLoadStep(5)
-func WithLoadStep(step int) Option {
-	return func(o *RunConfig) error {
-		o.loadStep = step
-
-		return nil
-	}
-}
+func WithLoadStep(step int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithLoadStepDuration specifies the load step duration for step schedule
 func WithLoadStepDuration(duration time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.loadStepDuration = duration
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithLoadDuration specifies the load duration
 func WithLoadDuration(duration time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.loadDuration = duration
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithAsync specifies the async option
-func WithAsync(async bool) Option {
-	return func(o *RunConfig) error {
-		o.async = async
-
-		return nil
-	}
-}
+func WithAsync(async bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConcurrencySchedule specifies the concurrency adjustment schedule
 //
 //	WithConcurrencySchedule("const")
 func WithConcurrencySchedule(schedule string) Option {
-	return func(o *RunConfig) error {
-		s := strings.TrimSpace(schedule)
-		if len(s) > 0 {
-			o.cSchedule = strings.ToLower(s)
-		}
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithConcurrencyStart specifies the concurrency start for line or step schedule
 //
 //	WithConcurrencyStart(5)
-func WithConcurrencyStart(v uint) Option {
-	return func(o *RunConfig) error {
-		o.cStart = v
-
-		return nil
-	}
-}
+func WithConcurrencyStart(v uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConcurrencyEnd specifies the concurrency end value for line or step schedule
 //
 //	WithConcurrencyEnd(25)
-func WithConcurrencyEnd(v uint) Option {
-	return func(o *RunConfig) error {
-		o.cEnd = v
-
-		return nil
-	}
-}
+func WithConcurrencyEnd(v uint) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConcurrencyStep specifies the concurrency step value or slope
 //
 //	WithConcurrencyStep(5)
-func WithConcurrencyStep(step int) Option {
-	return func(o *RunConfig) error {
-		o.cStep = step
-
-		return nil
-	}
-}
+func WithConcurrencyStep(step int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithConcurrencyStepDuration specifies the concurrency step duration for step schedule
 func WithConcurrencyStepDuration(duration time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.cStepDuration = duration
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithConcurrencyDuration specifies the total concurrency adjustment duration
 func WithConcurrencyDuration(duration time.Duration) Option {
-	return func(o *RunConfig) error {
-		o.cMaxDuration = duration
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithPacer specified the custom pacer to use
-func WithPacer(p load.Pacer) Option {
-	return func(o *RunConfig) error {
-		o.pacer = p
-
-		return nil
-	}
-}
+func WithPacer(p load.Pacer) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithWorkerTicker specified the custom worker ticker to use
 func WithWorkerTicker(ticker load.WorkerTicker) Option {
-	return func(o *RunConfig) error {
-		o.workerTicker = ticker
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithStreamRecvMsgIntercept specified the stream receive intercept function
@@ -1028,20 +477,14 @@ func WithWorkerTicker(ticker load.WorkerTicker) Option {
 //		return nil
 //	})
 func WithStreamRecvMsgIntercept(fn StreamRecvMsgInterceptFunc) Option {
-	return func(o *RunConfig) error {
-		o.recvMsgFunc = fn
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithStreamInterceptor specifies the stream interceptor provider function
 func WithStreamInterceptorProviderFunc(interceptor StreamInterceptorProviderFunc) Option {
-	return func(o *RunConfig) error {
-		o.streamInterceptorProviderFunc = interceptor
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithDataProvider provides custom data provider
@@ -1054,13 +497,7 @@ func WithStreamInterceptorProviderFunc(interceptor StreamInterceptorProviderFunc
 //		}
 //		return []*dynamic.Message{dynamicMsg}, nil
 //	}),
-func WithDataProvider(fn DataProviderFunc) Option {
-	return func(o *RunConfig) error {
-		o.dataProviderFunc = fn
-
-		return nil
-	}
-}
+func WithDataProvider(fn DataProviderFunc) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithMetadataProvider provides custom metadata provider
 //
@@ -1068,11 +505,8 @@ func WithDataProvider(fn DataProviderFunc) Option {
 //		return &metadata.MD{"token": []string{"secret"}}, nil
 //	}),
 func WithMetadataProvider(fn MetadataProviderFunc) Option {
-	return func(o *RunConfig) error {
-		o.mdProviderFunc = fn
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithStreamMessageProvider sets custom stream message provider
@@ -1093,187 +527,41 @@ func WithMetadataProvider(fn MetadataProviderFunc) Option {
 //		return dynamicMsg, err
 //	}),
 func WithStreamMessageProvider(fn StreamMessageProviderFunc) Option {
-	return func(o *RunConfig) error {
-		o.dataStreamFunc = fn
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithDefaultCallOptions sets the default CallOptions for calls over the connection.
 func WithDefaultCallOptions(opts []grpc.CallOption) Option {
-	return func(o *RunConfig) error {
-		o.defaultCallOptions = opts
-
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 // WithDisableTemplateFuncs disables template functions in call data
-func WithDisableTemplateFuncs(v bool) Option {
-	return func(o *RunConfig) error {
-		o.disableTemplateFuncs = v
-
-		return nil
-	}
-}
+func WithDisableTemplateFuncs(v bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // WithDisableTemplateData disables template data execution in call data
-func WithDisableTemplateData(v bool) Option {
-	return func(o *RunConfig) error {
-		o.disableTemplateData = v
-
-		return nil
-	}
-}
+func WithDisableTemplateData(v bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func createClientTransportCredentials(skipVerify bool, cacertFile, clientCertFile, clientKeyFile, cname string) (credentials.TransportCredentials, error) {
-	var tlsConf tls.Config
-
-	if clientCertFile != "" {
-		// Load the client certificates from disk
-		certificate, err := tls.LoadX509KeyPair(clientCertFile, clientKeyFile)
-		if err != nil {
-			return nil, fmt.Errorf("could not load client key pair: %v", err)
-		}
-		tlsConf.Certificates = []tls.Certificate{certificate}
-	}
-
-	if skipVerify {
-		tlsConf.InsecureSkipVerify = true
-	} else if cacertFile != "" {
-		// Create a certificate pool from the certificate authority
-		certPool := x509.NewCertPool()
-		ca, err := os.ReadFile(cacertFile)
-		if err != nil {
-			return nil, fmt.Errorf("could not read ca certificate: %v", err)
-		}
-
-		// Append the certificates from the CA
-		if ok := certPool.AppendCertsFromPEM(ca); !ok {
-			return nil, errors.New("failed to append ca certs")
-		}
-
-		tlsConf.RootCAs = certPool
-	}
-
-	if cname != "" {
-		tlsConf.ServerName = cname
-	}
-
-	return credentials.NewTLS(&tlsConf), nil
+	_ = "STUB: not implemented"
+	return *new(credentials.TransportCredentials), nil
 }
+
+// Load the client certificates from disk
+
+// Create a certificate pool from the certificate authority
+
+// Append the certificates from the CA
 
 func fromConfig(cfg *Config) []Option {
+	_ = "STUB: not implemented"
 	// set up all the options
-	options := make([]Option, 0, 17)
-
-	// init / fix up durations
-	if cfg.X > 0 {
-		cfg.Z = cfg.X
-	} else if cfg.Z > 0 {
-		cfg.N = math.MaxInt32
-	}
-
-	options = append(options,
-		WithProtoFile(cfg.Proto, cfg.ImportPaths),
-		WithProtoset(cfg.Protoset),
-		WithRootCertificate(cfg.RootCert),
-		WithCertificate(cfg.Cert, cfg.Key),
-		WithServerNameOverride(cfg.CName),
-		WithSkipTLSVerify(cfg.SkipTLSVerify),
-		WithSkipFirst(cfg.SkipFirst),
-		WithInsecure(cfg.Insecure),
-		WithAuthority(cfg.Authority),
-		WithConcurrency(cfg.C),
-		WithTotalRequests(cfg.N),
-		WithRPS(cfg.RPS),
-		WithTimeout(time.Duration(cfg.Timeout)),
-		WithRunDuration(time.Duration(cfg.Z)),
-		WithDialTimeout(time.Duration(cfg.DialTimeout)),
-		WithKeepalive(time.Duration(cfg.KeepaliveTime)),
-		WithName(cfg.Name),
-		WithCPUs(cfg.CPUs),
-		WithMetadata(cfg.Metadata),
-		WithTags(cfg.Tags),
-		WithStreamInterval(time.Duration(cfg.SI)),
-		WithStreamCallDuration(time.Duration(cfg.StreamCallDuration)),
-		WithStreamCallCount(cfg.StreamCallCount),
-		WithStreamDynamicMessages(cfg.StreamDynamicMessages),
-		WithReflectionMetadata(cfg.ReflectMetadata),
-		WithConnections(cfg.Connections),
-		WithEnableCompression(cfg.EnableCompression),
-		WithDurationStopAction(cfg.ZStop),
-		WithLoadSchedule(cfg.LoadSchedule),
-		WithLoadStart(cfg.LoadStart),
-		WithLoadStep(cfg.LoadStep),
-		WithLoadStepDuration(time.Duration(cfg.LoadStepDuration)),
-		WithLoadEnd(cfg.LoadEnd),
-		WithLoadDuration(time.Duration(cfg.LoadMaxDuration)),
-		WithClientLoadBalancing(cfg.LBStrategy),
-		WithAsync(cfg.Async),
-		WithConcurrencySchedule(cfg.CSchedule),
-		WithConcurrencyStart(cfg.CStart),
-		WithConcurrencyEnd(cfg.CEnd),
-		WithConcurrencyStep(cfg.CStep),
-		WithConcurrencyStepDuration(time.Duration(cfg.CStepDuration)),
-		WithConcurrencyDuration(time.Duration(cfg.CMaxDuration)),
-		WithCountErrors(cfg.CountErrors),
-		WithDisableTemplateFuncs(cfg.DisableTemplateFuncs),
-		WithDisableTemplateData(cfg.DisableTemplateData),
-		func(o *RunConfig) error {
-			o.call = cfg.Call
-			return nil
-		},
-		func(o *RunConfig) error {
-			o.host = cfg.Host
-			return nil
-		},
-	)
-
-	var defaultCallOptions []grpc.CallOption
-	if cfg.MaxCallRecvMsgSize != "" {
-		v, err := humanize.ParseBytes(cfg.MaxCallRecvMsgSize)
-		if err != nil {
-			return nil
-		}
-
-		defaultCallOptions = append(defaultCallOptions, grpc.MaxCallRecvMsgSize(int(v)))
-	}
-
-	if cfg.MaxCallSendMsgSize != "" {
-		v, err := humanize.ParseBytes(cfg.MaxCallSendMsgSize)
-		if err != nil {
-			return nil
-		}
-
-		defaultCallOptions = append(defaultCallOptions, grpc.MaxCallSendMsgSize(int(v)))
-	}
-
-	if len(defaultCallOptions) > 0 {
-		options = append(options, WithDefaultCallOptions(defaultCallOptions))
-	}
-
-	if strings.TrimSpace(cfg.MetadataPath) != "" {
-		options = append(options, WithMetadataFromFile(strings.TrimSpace(cfg.MetadataPath)))
-	}
-
-	// data
-	if dataStr, ok := cfg.Data.(string); ok && dataStr == "@" {
-		options = append(options, WithDataFromReader(os.Stdin))
-	} else if strings.TrimSpace(cfg.DataPath) != "" {
-		options = append(options, WithDataFromFile(strings.TrimSpace(cfg.DataPath)))
-	} else {
-		options = append(options, WithData(cfg.Data))
-	}
-
-	// or binary data
-	if len(cfg.BinData) > 0 {
-		options = append(options, WithBinaryData(cfg.BinData))
-	}
-	if len(cfg.BinDataPath) > 0 {
-		options = append(options, WithBinaryDataFromFile(cfg.BinDataPath))
-	}
-
-	return options
+	return nil
 }
+
+// init / fix up durations
+
+// data
+
+// or binary data

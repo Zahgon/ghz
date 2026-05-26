@@ -81,11 +81,4 @@ func main() {
 	server.Logger.Fatal(server.Start(hostPort))
 }
 
-func handleError(err error) {
-	if err != nil {
-		if errString := err.Error(); errString != "" {
-			fmt.Fprintln(os.Stderr, errString)
-		}
-		os.Exit(1)
-	}
-}
+func handleError(err error) { _ = "STUB: not implemented"; return }
